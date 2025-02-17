@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/plugins/italy_inspire_cadastre_downloader" >
+        <file>icon.png</file>
+    </qresource>
+</RCC>
