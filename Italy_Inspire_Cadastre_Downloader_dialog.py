@@ -28,10 +28,10 @@ import zipfile
 
 from qgis.PyQt import uic
 from qgis.PyQt import QtWidgets
-from PyQt5.QtSvg import QSvgRenderer
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from qgis.PyQt.QtSvg import QSvgRenderer
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import *
 from qgis.utils import iface, Qgis
 from qgis.core import QgsProject, QgsVectorLayer
 
