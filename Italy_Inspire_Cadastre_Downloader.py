@@ -27,7 +27,7 @@ from qgis.PyQt.QtWidgets import QAction
 from qgis.utils import iface
 
 # Initialize Qt resources from file resources.py
-from .resources import *
+# from .resources import *
 # Import the code for the dialog
 from .Italy_Inspire_Cadastre_Downloader_dialog import ItalyInspireCadastreDownloaderDialog
 import os.path
@@ -164,7 +164,7 @@ class ItalyInspireCadastreDownloader:
     def initGui(self):
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
-        icon_path = ':/plugins/italy_inspire_cadastre_downloader/icons/icon.png'
+        icon_path = os.path.join(self.plugin_dir,'icons','icon.png')
         self.add_action(
             icon_path,
             text=self.tr(u'Italy Inspire Cadastre Downloader'),

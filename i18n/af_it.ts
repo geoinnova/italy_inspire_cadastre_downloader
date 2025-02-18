@@ -107,7 +107,7 @@
     <message>
         <location filename="../Italy_Inspire_Cadastre_Downloader_dialog_base.ui" line="152"/>
         <source>Download folder</source>
-        <translation>Scarica la cartella</translation>
+        <translation>Salva con nome</translation>
     </message>
     <message>
         <location filename="../Italy_Inspire_Cadastre_Downloader_dialog_base.ui" line="180"/>
