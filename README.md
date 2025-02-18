@@ -1,7 +1,7 @@
 
 # QGIS Pluging Italy Inspire Cadastral Downloader (IICD)
 
-QGIS Plugin for downloading and visualizing Italian cadastral data according to INSPIRE directly in QGIS
+QGIS Plugin for downloading and visualizing Italian cadastral data according to INSPIRE directly in QGIS. Developed by [Geoinnova](https://geoinnova.org/).
 
 The Italy Inspire Cadastral Downloader QGIS plugin is designed to facilitate the download of municipal cadastral data in Italy, optimizing access to key information for spatial analysis and territorial management.
 

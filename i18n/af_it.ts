@@ -17,62 +17,62 @@
 <context>
     <name>ItalyInspireCadastreDownloaderDialog</name>
     <message>
-        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="132"/>
+        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="128"/>
         <source>An error occurred while request data. Code error: </source>
         <translation>Si è verificato un errore durante la richiesta dei dati. Errore nel codice:</translation>
     </message>
     <message>
-        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="199"/>
+        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="194"/>
         <source>An error occurred while decompressing the file</source>
         <translation>Si è verificato un errore durante la decompressione del file</translation>
     </message>
     <message>
-        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="233"/>
+        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="228"/>
         <source>The folder already exists</source>
         <translation>La cartella esiste già</translation>
     </message>
     <message>
-        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="240"/>
+        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="235"/>
         <source>You must add a download folder</source>
         <translation>È necessario aggiungere una cartella di download</translation>
     </message>
     <message>
-        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="252"/>
+        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="247"/>
         <source>Download successfuly completed</source>
         <translation>Download completato con successo</translation>
     </message>
     <message>
-        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="260"/>
+        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="255"/>
         <source>You must select a municipality</source>
         <translation>È necessario selezionare un comune</translation>
     </message>
     <message>
-        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="269"/>
+        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="264"/>
         <source>You must complete the data of the province and municipality and indicate the download route.</source>
         <translation>È necessario completare i dati della provincia e del comune e indicare il percorso di download.</translation>
     </message>
     <message>
-        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="270"/>
+        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="265"/>
         <source>You must select at least one cadastral entity to download.</source>
         <translation>È necessario selezionare almeno un&apos;entità catastale da scaricare.</translation>
     </message>
     <message>
-        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="103"/>
+        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="99"/>
         <source>Select folder</source>
         <translation>Seleziona la cartella</translation>
     </message>
     <message>
-        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="152"/>
+        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="147"/>
         <source>Select a region</source>
         <translation>Seleziona una regione</translation>
     </message>
     <message>
-        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="166"/>
+        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="161"/>
         <source>Select a province</source>
         <translation>Seleziona una provincia</translation>
     </message>
     <message>
-        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="246"/>
+        <location filename="../Italy_Inspire_Cadastre_Downloader_dialog.py" line="241"/>
         <source>Select a municipality</source>
         <translation>Seleziona un comune</translation>
     </message>
@@ -121,8 +121,10 @@
     </message>
     <message>
         <location filename="../Italy_Inspire_Cadastre_Downloader_dialog_base.ui" line="256"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If you want to get more information visit: &lt;a href=&quot;https://geoinnova.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Geoinnova&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Se vuoi avere maggiori informazioni visita: &lt;a href=&quot;https://geoinnova.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Geoinnova&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stay informed with our &lt;a href=&quot;https://geoinnova.it/rimani-aggiornato-con-la-nostra-newsletter/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Newsletter&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;For more information about the data &lt;a href=&quot;https://iicd.geoinnova.it/info&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Click Here&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rimani informato con la nostra &lt;a href=&quot;https://geoinnova.it/rimani-aggiornato-con-la-nostra-newsletter/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Newsletter&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Per maggiori informazioni sui dati &lt;a href=&quot;https://iicd.geoinnova.it/info&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;clicca qui&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 </TS>

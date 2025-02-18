@@ -65,11 +65,11 @@ class ItalyInspireCadastreDownloaderDialog(QtWidgets.QDialog, FORM_CLASS):
         
         # show the dialog
         self.progressBar.setValue(0)
-        self.setWindowIcon(QIcon(os.path.join(self.plugin_dir,'icon.png')))
+        self.setWindowIcon(QIcon(os.path.join(self.plugin_dir,'icons','icon.png')))
         self.show()
         
         # pixmap = QPixmap(100, 50)
-        pixmap = QPixmap(os.path.join(self.plugin_dir,'geoinnova.png'))  # Cargar imagen PNG
+        pixmap = QPixmap(os.path.join(self.plugin_dir,'icons','geoinnova.png'))  # Cargar imagen PNG
         # pixmap_scaled = pixmap.scaledToWidth(50)
         self.label_svg.setMaximumWidth(225)
         self.label_svg.setMaximumHeight(67)
@@ -131,9 +131,7 @@ class ItalyInspireCadastreDownloaderDialog(QtWidgets.QDialog, FORM_CLASS):
 
         # Ejemplo de uso
         # Descargar un archivo
-        
-    # make_request('/download/VENETO/VR/C498_CEREA', r'C:\Users\Win10\Downloads', 'C498_CEREA')
-    
+            
     def get_data(self):
         
         self.json_data = self.make_request('/all_municipalities')

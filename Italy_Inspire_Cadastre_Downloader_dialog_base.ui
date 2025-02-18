@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>338</width>
-    <height>273</height>
+    <width>855</width>
+    <height>399</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -253,7 +253,8 @@
         <enum>Qt::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If you want to get more information visit: &lt;a href=&quot;https://geoinnova.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Geoinnova&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stay informed with our &lt;a href=&quot;https://geoinnova.it/rimani-aggiornato-con-la-nostra-newsletter/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Newsletter&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;For more information about the data &lt;a href=&quot;https://iicd.geoinnova.it/info&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Click Here&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
