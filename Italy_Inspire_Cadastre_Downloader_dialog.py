@@ -135,7 +135,6 @@ class ItalyInspireCadastreDownloaderDialog(QtWidgets.QDialog, FORM_CLASS):
     def get_data(self):
         
         self.json_data = self.make_request('/all_municipalities')
-        print("municipalities")
         self.comboBox_region.clear()
         self.comboBox_province.clear()
         self.comboBox_municipality.clear()
