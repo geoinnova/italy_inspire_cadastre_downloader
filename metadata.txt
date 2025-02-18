@@ -23,6 +23,7 @@ repository=https://github.com/geoinnova/italy_inspire_cadastre_downloader
 changelog=
 - 14.02.2025 V0.1:
         - Initial version
+        - Add Qt6 support
 
 # End of mandatory metadata
 
@@ -37,9 +38,10 @@ tags=python
 
 homepage=https://github.com/geoinnova/italy_inspire_cadastre_downloader
 category=Plugins
-icon=icon.png
+icon=icons/icon.png
 # experimental flag
 experimental=False
+supportsQt6=True
 
 # deprecated flag (applies to the whole plugin, not just a single version)
 deprecated=False
