@@ -34,6 +34,7 @@ from qgis.PyQt.QtGui import *
 from qgis.PyQt.QtWidgets import *
 from qgis.utils import iface, Qgis
 from qgis.core import QgsProject, QgsVectorLayer
+import processing
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -195,24 +196,36 @@ class ItalyInspireCadastreDownloaderDialog(QtWidgets.QDialog, FORM_CLASS):
             return None
         
     
-    def add_layers(self, folder, group_name):
+    def add_layers(self, folder, group_name, ext):
 
         project = QgsProject.instance()
         tree_root = project.layerTreeRoot()
         layers_group = tree_root.addGroup(group_name)
 
-        for gmlfile in os.listdir(folder):
-            if gmlfile.endswith('.gml'):
-                layer_path = os.path.join(folder, gmlfile)
-                file_name = os.path.splitext(gmlfile)[0]
+        for file in os.listdir(folder):
+            if file.endswith(ext):
+                layer_path = os.path.join(folder, file)
+                file_name = os.path.splitext(file)[0]
                 gml_layer = QgsVectorLayer(layer_path, file_name, "ogr")
                 project.addMapLayer(gml_layer, False)
                 layers_group.addLayer(gml_layer)
-
+                
+    def export_to_extension(self, folder, ext_source, ext_target):
+        for file in os.listdir(folder):
+            if file.endswith(ext_source):
+                layer_path_source = os.path.join(folder, file)
+                layer_path_target = os.path.join(folder, file.replace(ext_source, ext_target))
+                file_name = os.path.splitext(file)[0]
+                
+                processing.run("native:savefeatures", {'INPUT':layer_path_source,
+                                                   'OUTPUT':layer_path_target,
+                                                   'LAYER_NAME':file_name,
+                                                   'DATASOURCE_OPTIONS':'',
+                                                   'LAYER_OPTIONS':'',
+                                                   'ACTION_ON_EXISTING_FILE':0})
         
 
     def download(self):
-        
         
         
         region = self.comboBox_region.currentData()
@@ -235,20 +248,28 @@ class ItalyInspireCadastreDownloaderDialog(QtWidgets.QDialog, FORM_CLASS):
             self.msgBar.pushMessage(f'{msg}', level=Qgis.Warning, duration=3)
             return None
 
-        
+        extension_file_add = ".gml"
+        if self.checkBox_dwn_gpkg.isChecked():
+            extension_file_add = ".gpkg"
             
         if municipality not in ("",self.tr("Select a municipality")) and self.municipality_activated:
             self.make_request(f'/download/{region}/{province}/{municipality}', folder, municipality)
-            self.progressBar.setValue(50)
+            self.progressBar.setValue(25)
             self.unzip_file(file, folder_extract)
             os.remove(file)
-            self.progressBar.setValue(100)
+            
+            self.progressBar.setValue(50)
+            
+            if self.checkBox_dwn_gpkg.isChecked():
+                self.export_to_extension(folder_extract, ".gml", ".gpkg")
+            
             msg = self.tr("Download successfuly completed")
             self.msgBar.pushMessage(f'{msg}', level=Qgis.Info, duration=3)
+            self.progressBar.setValue(100)
             
             #Load layer
             if self.checkBox_addToMap.isChecked():
-                self.add_layers(folder_extract, municipality)
+                self.add_layers(folder_extract, municipality, extension_file_add)
                 
         else:
             msg = self.tr("You must select a municipality")
