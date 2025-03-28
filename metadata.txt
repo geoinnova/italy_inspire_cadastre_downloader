@@ -21,6 +21,9 @@ tracker=https://github.com/geoinnova/italy_inspire_cadastre_downloader
 repository=https://github.com/geoinnova/italy_inspire_cadastre_downloader
 
 changelog=
+- 28.03.2025 V0.2:
+        - Add download as gpkg
+        - Add tooltips information
 - 14.02.2025 V0.1:
         - Initial version
         - Add Qt6 support
