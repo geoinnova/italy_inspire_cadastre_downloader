@@ -55,6 +55,8 @@ class ItalyInspireCadastreDownloaderDialog(QtWidgets.QDialog, FORM_CLASS):
         
         self.iface = iface
         self.msgBar = iface.messageBar()
+        self.locale = QSettings().value('locale/userLocale')[0:2]
+        print(self.locale)
         
         self.plugin_dir = os.path.dirname(__file__)
         
@@ -278,6 +280,36 @@ class ItalyInspireCadastreDownloaderDialog(QtWidgets.QDialog, FORM_CLASS):
             self.msgBar.pushMessage(f'{msg}', level=Qgis.Warning, duration=3)
             return None
         
+    def get_file_style(self, base_path, base_name):
+        """
+        Get style file by language
+        """
+
+        # Path alternatives
+        style_en = os.path.join(base_path, f"{base_name}_en.qml")
+        style_lan = os.path.join(base_path, f"{base_name}_{self.locale}.qml")
+        style_base = os.path.join(base_path, f"{base_name}.qml")  # style base italiano
+
+        # Selection
+        if self.locale == "en" and os.path.exists(style_en):
+            style_file = style_en
+        elif os.path.exists(style_lan):
+            style_file = style_lan
+        else:
+            style_file = style_base
+
+        return style_file
+        
+        
+    def add_style(self, layer):
+        
+        if "_map" in layer.name():
+            layer.loadNamedStyle(os.path.join(self.plugin_dir,"styles","map.qml"))
+        elif "_ple" in layer.name():
+            # layer.loadNamedStyle(os.path.join(self.plugin_dir,"styles","ple.qml"))
+            file_style = self.get_file_style(os.path.join(self.plugin_dir,"styles"),"ple")
+            layer.loadNamedStyle(file_style)
+        
     
     def add_layers(self, folder, group_name, ext):
 
@@ -292,6 +324,7 @@ class ItalyInspireCadastreDownloaderDialog(QtWidgets.QDialog, FORM_CLASS):
                 gml_layer = QgsVectorLayer(layer_path, file_name, "ogr")
                 project.addMapLayer(gml_layer, False)
                 layers_group.addLayer(gml_layer)
+                self.add_style(gml_layer)
                 
     def export_to_extension(self, folder, ext_source, ext_target):
         for file in os.listdir(folder):
@@ -306,7 +339,8 @@ class ItalyInspireCadastreDownloaderDialog(QtWidgets.QDialog, FORM_CLASS):
                                                    'DATASOURCE_OPTIONS':'',
                                                    'LAYER_OPTIONS':'',
                                                    'ACTION_ON_EXISTING_FILE':0})
-        
+    
+    
 
     def download(self):
         
@@ -362,7 +396,6 @@ class ItalyInspireCadastreDownloaderDialog(QtWidgets.QDialog, FORM_CLASS):
             if self.checkBox_addToMap.isChecked():
                 self.add_layers(folder_extract, municipality, extension_file_add)
                 
-            
             progress = int((idx / total) * 100)
             self.progressBar.setValue(progress)
 
