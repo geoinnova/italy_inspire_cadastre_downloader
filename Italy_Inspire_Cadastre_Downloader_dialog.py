@@ -55,6 +55,8 @@ class ItalyInspireCadastreDownloaderDialog(QtWidgets.QDialog, FORM_CLASS):
         
         self.iface = iface
         self.msgBar = iface.messageBar()
+        self.locale = QSettings().value('locale/userLocale')[0:2]
+        print(self.locale)
         
         self.plugin_dir = os.path.dirname(__file__)
         
@@ -76,6 +78,7 @@ class ItalyInspireCadastreDownloaderDialog(QtWidgets.QDialog, FORM_CLASS):
         self.label_svg.setMaximumHeight(67)
         self.label_svg.setPixmap(pixmap)
         self.label_svg.setScaledContents(True)  # Escalar la imagen para ajustarla
+        self.comboBox_municipality.view().setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
                
         self.municipality_activated = False
         self.directory_activated = False
@@ -91,8 +94,14 @@ class ItalyInspireCadastreDownloaderDialog(QtWidgets.QDialog, FORM_CLASS):
         self.comboBox_province.currentIndexChanged.connect(self.load_municipalities)
         self.comboBox_municipality.currentIndexChanged.connect(self.restart_progressbar)
         self.pushButton_run.clicked.connect(self.download)
-        # self.button_box.clicked.connect(self._close)
+        self.comboBox_municipality.model().itemChanged.connect(self._lambda_manejar_opcion())
+        
+        self.text_all = self.tr("All")
+        self.text_all_estado = False
 
+
+    def _lambda_manejar_opcion(self):
+        return lambda item: self.manejar_opcion_todos(self.comboBox_municipality, item)
 
     def select_output_folder(self) -> None:
         """Select output folder"""
@@ -167,18 +176,94 @@ class ItalyInspireCadastreDownloaderDialog(QtWidgets.QDialog, FORM_CLASS):
 
     def load_municipalities(self):
         """Cargar municipios basados en la provincia seleccionada."""
+        # print("municipios activado")
+        try:
+            self.comboBox_municipality.model().itemChanged.disconnect(self._lambda_manejar_opcion)
+            # print("desactivado municipios")
+        except Exception as e:
+            # print("Exception desactivado municipios:",e)
+            pass
+        
+        # self.comboBox_municipality.setModel(QStandardItemModel())
         self.comboBox_municipality.clear()
         region = self.comboBox_region.currentData()
         province = self.comboBox_province.currentData()
 
         if region and province and province in self.json_data[region]:
-            self.comboBox_municipality.addItem(self.tr("Select a municipality"), None)
+            self.comboBox_municipality.addItem(self.text_all, self.text_all)
+            # item_todos.setFlags(Qt.ItemIsEnabled | Qt.ItemIsUserCheckable | Qt.ItemIsSelectable| Qt.ItemIsEditable)
+            
             for municipality in self.json_data[region][province]:
                 self.comboBox_municipality.addItem(municipality, municipality)
-                
+                index = self.comboBox_municipality.count() - 1
+                item = self.comboBox_municipality.model().item(index)
+
+        try:
+            self.comboBox_municipality.model().itemChanged.connect(self._lambda_manejar_opcion)
+            # print("activado municipios")
+        except Exception as e:
+            # print("Exception activado municipios:",e)
+            pass
+        
         self.municipality_activated = True
         self.restart_progressbar()
         
+    
+    def manejar_opcion_todos(self, combo, changed_item):
+        try:
+            self.comboBox_municipality.model().itemChanged.disconnect(self._lambda_manejar_opcion)
+            # print("desactivado opciones")
+        except Exception as e:
+            # print("Exception desactivado opciones:",e)
+            pass
+        model = combo.model()
+        index_todos = 0  # "Todos" está en el índice 1
+
+        item_todos = model.item(index_todos)
+        if not item_todos:
+            return
+
+        if item_todos.checkState() == Qt.Checked and self.text_all_estado == False:
+            # Se marcó "Todos" → desactivar el resto
+            # print("Estaba desactivado y se ha activado1")
+            self.text_all_estado = True
+            for i in range(1, combo.count()):
+                item = model.item(i)
+                if item:
+                    item.setCheckState(Qt.Checked)
+                    item.setFlags(item.flags() & ~Qt.ItemIsEnabled)
+ 
+                    
+        elif item_todos.checkState() == Qt.Checked and self.text_all_estado == True:
+            # print("Estaba activado y sigue activado2")
+            changed_item.setCheckState(Qt.Checked)
+            self.text_all_estado = True
+            pass
+        elif item_todos.checkState() == Qt.Unchecked and self.text_all_estado == False:
+            # print("Estaba desactivado y sigue desactivado3")
+            self.text_all_estado = False
+            pass
+            # Se desmarcó "Todos" → reactivar y deseleccionar el resto
+
+                    
+        elif item_todos.checkState() == Qt.Unchecked and self.text_all_estado == True:
+            # print("Estaba activado y se ha desactivado4")
+            self.text_all_estado = False
+            # Se desmarcó "Todos" → reactivar y deseleccionar el resto
+            for i in range(1, combo.count()):
+                item = model.item(i)
+                if item:
+                    item.setCheckState(Qt.Unchecked)
+                    item.setFlags(item.flags() | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsUserCheckable)
+                    
+        
+        try:
+            self.comboBox_municipality.model().itemChanged.connect(self._lambda_manejar_opcion)
+            # print("activado opciones")
+        except Exception as e:
+            # print("Exception activado opciones:",e)
+            pass
+    
     
     def restart_progressbar(self):
         self.progressBar.setValue(0)
@@ -195,6 +280,36 @@ class ItalyInspireCadastreDownloaderDialog(QtWidgets.QDialog, FORM_CLASS):
             self.msgBar.pushMessage(f'{msg}', level=Qgis.Warning, duration=3)
             return None
         
+    def get_file_style(self, base_path, base_name):
+        """
+        Get style file by language
+        """
+
+        # Path alternatives
+        style_en = os.path.join(base_path, f"{base_name}_en.qml")
+        style_lan = os.path.join(base_path, f"{base_name}_{self.locale}.qml")
+        style_base = os.path.join(base_path, f"{base_name}.qml")  # style base italiano
+
+        # Selection
+        if self.locale == "en" and os.path.exists(style_en):
+            style_file = style_en
+        elif os.path.exists(style_lan):
+            style_file = style_lan
+        else:
+            style_file = style_base
+
+        return style_file
+        
+        
+    def add_style(self, layer):
+        
+        if "_map" in layer.name():
+            layer.loadNamedStyle(os.path.join(self.plugin_dir,"styles","map.qml"))
+        elif "_ple" in layer.name():
+            # layer.loadNamedStyle(os.path.join(self.plugin_dir,"styles","ple.qml"))
+            file_style = self.get_file_style(os.path.join(self.plugin_dir,"styles"),"ple")
+            layer.loadNamedStyle(file_style)
+        
     
     def add_layers(self, folder, group_name, ext):
 
@@ -209,6 +324,7 @@ class ItalyInspireCadastreDownloaderDialog(QtWidgets.QDialog, FORM_CLASS):
                 gml_layer = QgsVectorLayer(layer_path, file_name, "ogr")
                 project.addMapLayer(gml_layer, False)
                 layers_group.addLayer(gml_layer)
+                self.add_style(gml_layer)
                 
     def export_to_extension(self, folder, ext_source, ext_target):
         for file in os.listdir(folder):
@@ -223,26 +339,16 @@ class ItalyInspireCadastreDownloaderDialog(QtWidgets.QDialog, FORM_CLASS):
                                                    'DATASOURCE_OPTIONS':'',
                                                    'LAYER_OPTIONS':'',
                                                    'ACTION_ON_EXISTING_FILE':0})
-        
+    
+    
 
     def download(self):
         
-        
         region = self.comboBox_region.currentData()
         province = self.comboBox_province.currentData()
-        municipality = self.comboBox_municipality.currentData()
+        municipalities = self.comboBox_municipality.checkedItems()  # Ahora es una lista
         folder = self.lineEdit_path.text()
-        file = os.path.join(folder, municipality+".zip")
-        
-        folder_extract = os.path.splitext(file)[0]
-        
-        if os.path.isdir(folder_extract):
-            msg = self.tr("The folder already exists")
-            self.msgBar.pushMessage(f'{msg}', level=Qgis.Warning, duration=3)
-            return None
-        else:
-            os.makedirs(folder_extract)
-        
+
         if not self.directory_activated:
             msg = self.tr("You must add a download folder")
             self.msgBar.pushMessage(f'{msg}', level=Qgis.Warning, duration=3)
@@ -251,30 +357,49 @@ class ItalyInspireCadastreDownloaderDialog(QtWidgets.QDialog, FORM_CLASS):
         extension_file_add = ".gml"
         if self.checkBox_dwn_gpkg.isChecked():
             extension_file_add = ".gpkg"
-            
-        if municipality not in ("",self.tr("Select a municipality")) and self.municipality_activated:
-            self.make_request(f'/download/{region}/{province}/{municipality}', folder, municipality)
-            self.progressBar.setValue(25)
-            self.unzip_file(file, folder_extract)
-            os.remove(file)
-            
-            self.progressBar.setValue(50)
-            
-            if self.checkBox_dwn_gpkg.isChecked():
-                self.export_to_extension(folder_extract, ".gml", ".gpkg")
-            
-            msg = self.tr("Download successfuly completed")
-            self.msgBar.pushMessage(f'{msg}', level=Qgis.Info, duration=3)
-            self.progressBar.setValue(100)
-            
-            #Load layer
-            if self.checkBox_addToMap.isChecked():
-                self.add_layers(folder_extract, municipality, extension_file_add)
-                
-        else:
+
+        # Filtrar los municipios válidos
+        valid_municipalities =  [m for m in municipalities if m not in ("", self.text_all)]
+
+        if not valid_municipalities or not self.municipality_activated:
             msg = self.tr("You must select a municipality")
             self.msgBar.pushMessage(f'{msg}', level=Qgis.Warning, duration=3)
             return None
+        
+        total = len(valid_municipalities)
+        self.progressBar.setValue(0)
+
+        for idx, municipality in enumerate(valid_municipalities):
+            file = os.path.join(folder, municipality + ".zip")
+            folder_extract = os.path.splitext(file)[0]
+
+            if os.path.isdir(folder_extract):
+                msg = self.tr(f"The folder for {municipality} already exists")
+                self.msgBar.pushMessage(f'{msg}', level=Qgis.Warning, duration=3)
+                continue  # Saltar a siguiente municipio
+            else:
+                os.makedirs(folder_extract)
+
+            self.make_request(f'/download/{region}/{province}/{municipality}', folder, municipality)
+            # self.progressBar.setValue(25)
+
+            self.unzip_file(file, folder_extract)
+            os.remove(file)
+            # self.progressBar.setValue(50)
+
+            if self.checkBox_dwn_gpkg.isChecked():
+                self.export_to_extension(folder_extract, ".gml", ".gpkg")
+
+            msg = self.tr(f"Download for {municipality} completed")
+            self.msgBar.pushMessage(f'{msg}', level=Qgis.Info, duration=2)
+
+            if self.checkBox_addToMap.isChecked():
+                self.add_layers(folder_extract, municipality, extension_file_add)
+                
+            progress = int((idx / total) * 100)
+            self.progressBar.setValue(progress)
+
+        self.progressBar.setValue(100)
 
     
     def check_form(self, option: int) -> None:
