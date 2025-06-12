@@ -8,7 +8,7 @@ name[it]=Italy Inspire Cadastre Downloader
 qgisMinimumVersion=3.0
 description=QGIS plugin for downloading cadastral data of cadastrals parcels and cadastral zoning in Italy.
 description[it]=Plugin QGIS per il download dei dati catastali delle particelle catastali e della zonizzazione in Italia.
-version=0.2
+version=0.3
 author=Geoinnova SL
 email=corsigis@geoinnova.org
 
@@ -21,6 +21,9 @@ tracker=https://github.com/geoinnova/italy_inspire_cadastre_downloader
 repository=https://github.com/geoinnova/italy_inspire_cadastre_downloader
 
 changelog=
+- 12.06.2025 V0.3:
+        - Minor changes
+        - Add spanish as language
 - 28.03.2025 V0.2:
         - Add download as gpkg
         - Add tooltips information

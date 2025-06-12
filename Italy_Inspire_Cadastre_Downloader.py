@@ -68,7 +68,8 @@ class ItalyInspireCadastreDownloader:
 
         # Check if plugin was started the first time in current QGIS session
         # Must be set in initGui() to survive plugin reloads
-        self.first_start = None
+        # self.first_start = None
+        self.dlg = None
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
@@ -191,8 +192,7 @@ class ItalyInspireCadastreDownloader:
 
         # Create the dialog with elements (after translation) and keep reference
         # Only create GUI ONCE in callback, so that it will only load when the plugin is started
-        if self.first_start == True:
-            self.first_start = False
+        if self.dlg is None:
             self.dlg = ItalyInspireCadastreDownloaderDialog()
 
         # show the dialog
