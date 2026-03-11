@@ -26,6 +26,7 @@ import os
 import requests
 import zipfile
 
+from qgis.PyQt.QtCore import Qt
 from qgis.PyQt import uic
 from qgis.PyQt import QtWidgets
 from qgis.PyQt.QtSvg import QSvgRenderer
@@ -35,6 +36,8 @@ from qgis.PyQt.QtWidgets import *
 from qgis.utils import iface, Qgis
 from qgis.core import QgsProject, QgsVectorLayer
 import processing
+from .qt.get_qt_elements import *
+
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -78,8 +81,8 @@ class ItalyInspireCadastreDownloaderDialog(QtWidgets.QDialog, FORM_CLASS):
         self.label_svg.setMaximumHeight(67)
         self.label_svg.setPixmap(pixmap)
         self.label_svg.setScaledContents(True)  # Escalar la imagen para ajustarla
-        self.comboBox_municipality.view().setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-               
+        self.comboBox_municipality.view().setVerticalScrollBarPolicy(SCROLLBAR_AS_NEEDED)
+
         self.municipality_activated = False
         self.directory_activated = False
         
@@ -223,37 +226,37 @@ class ItalyInspireCadastreDownloaderDialog(QtWidgets.QDialog, FORM_CLASS):
         if not item_todos:
             return
 
-        if item_todos.checkState() == Qt.Checked and self.text_all_estado == False:
+        if item_todos.checkState() == CHECKED and self.text_all_estado == False:
             # Se marcó "Todos" → desactivar el resto
             # print("Estaba desactivado y se ha activado1")
             self.text_all_estado = True
             for i in range(1, combo.count()):
                 item = model.item(i)
                 if item:
-                    item.setCheckState(Qt.Checked)
+                    item.setCheckState(CHECKED)
                     item.setFlags(item.flags() & ~Qt.ItemIsEnabled)
  
                     
-        elif item_todos.checkState() == Qt.Checked and self.text_all_estado == True:
+        elif item_todos.checkState() == CHECKED and self.text_all_estado == True:
             # print("Estaba activado y sigue activado2")
-            changed_item.setCheckState(Qt.Checked)
+            changed_item.setCheckState(CHECKED)
             self.text_all_estado = True
             pass
-        elif item_todos.checkState() == Qt.Unchecked and self.text_all_estado == False:
+        elif item_todos.checkState() == UNCHECKED and self.text_all_estado == False:
             # print("Estaba desactivado y sigue desactivado3")
             self.text_all_estado = False
             pass
             # Se desmarcó "Todos" → reactivar y deseleccionar el resto
 
                     
-        elif item_todos.checkState() == Qt.Unchecked and self.text_all_estado == True:
+        elif item_todos.checkState() == UNCHECKED and self.text_all_estado == True:
             # print("Estaba activado y se ha desactivado4")
             self.text_all_estado = False
             # Se desmarcó "Todos" → reactivar y deseleccionar el resto
             for i in range(1, combo.count()):
                 item = model.item(i)
                 if item:
-                    item.setCheckState(Qt.Unchecked)
+                    item.setCheckState(UNCHECKED)
                     item.setFlags(item.flags() | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsUserCheckable)
                     
         

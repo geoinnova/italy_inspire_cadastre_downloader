@@ -5,7 +5,8 @@
 [general]
 name=Italy Inspire Cadastre Downloader
 name[it]=Italy Inspire Cadastre Downloader
-qgisMinimumVersion=3.0
+qgisMinimumVersion=3.22
+qgisMaximumVersion=4.99
 description=QGIS plugin for downloading cadastral data of cadastrals parcels and cadastral zoning in Italy.
 description[it]=Plugin QGIS per il download dei dati catastali delle particelle catastali e della zonizzazione in Italia.
 version=0.3
